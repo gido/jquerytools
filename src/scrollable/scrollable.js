@@ -33,7 +33,9 @@
 			speed: 400,
 			vertical: false,
 			touch: true,
-			wheelSpeed: 0
+			wheelSpeed: 0,
+			useMargin: false,
+			offset: 0
 		} 
 	};
 					
@@ -169,8 +171,12 @@
 					fire.trigger(e, [i, time]);				
 					if (e.isDefaultPrevented() || !item.length) { return self; }			
 				}  
-	
-				var props = vertical ? {top: -item.position().top} : {left: -item.position().left};  
+				var props;
+				if(conf.useMargin) {
+					props = vertical ? {'margin-top': (conf.offset - (i*item.width())) } : {'margin-left': (conf.offset -(i*item.width())) };   
+				} else {
+					props = vertical ? {top: (conf.offset - item.position().top)} : {left: (conf.offset - item.position().left)};  
+				}
 				
 				index = i;
 				current = self;  
@@ -360,6 +366,7 @@
 			$(this).data("scrollable", el);	
 		});
 		
+
 		return conf.api ? el: this; 
 		
 	};
